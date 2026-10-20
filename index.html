@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Patterns Explorer</title>
+    <style>
+      :root {
+        --bg: #f7f7f7;
+        --panel: #ffffff;
+        --surface: #f3f4f6;
+        --text: #171717;
+        --muted: #5d6470;
+        --line: #e5e7eb;
+        --brand: #111827;
+        --brand-soft: #eef2ff;
+        --accent: #2563eb;
+        --warning: #f59e0b;
+        --danger: #dc2626;
+        --success: #16a34a;
+        --shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      a { color: inherit; text-decoration: none; }
+      button, textarea, select { font: inherit; }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px 64px;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(255,255,255,0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar-inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #111827, #374151);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .nav a:hover { color: var(--text); }
+      .menu-toggle {
+        display: none;
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 10px;
+        padding: 10px 12px;
+        cursor: pointer;
+      }
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 310px;
+        gap: 32px;
+        padding-top: 28px;
+      }
+      .article {
+        min-width: 0;
+      }
+      .article h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 1.06;
+        letter-spacing: -0.06em;
+      }
+      .lede {
+        font-size: 1.14rem;
+        line-height: 1.75;
+        color: var(--muted);
+        margin: 0 0 22px;
+      }
+      .byline {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 14px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #dbeafe, #e2e8f0);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+      .meta-tag {
+        font-size: 12px;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--muted);
+      }
+      .article-content {
+        display: grid;
+        gap: 26px;
+      }
+      .article-content p,
+      .article-content li {
+        font-size: 1.06rem;
+        line-height: 1.9;
+      }
+      .article-content h2,
+      .article-content h3 {
+        letter-spacing: -0.04em;
+        margin: 0 0 12px;
+      }
+      .article-content h2 {
+        font-size: clamp(1.8rem, 2vw, 2.4rem);
+      }
+      .article-content h3 {
+        font-size: 1.2rem;
+      }
+      .article-content blockquote {
+        background: var(--panel);
+        border-left: 4px solid var(--brand);
+        border-radius: 14px;
+        margin: 10px 0 0;
+        padding: 18px 22px;
+      }
+      .pattern-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 10px;
+      }
+      .pattern-card {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+      .pattern-card h4 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+      }
+      .pattern-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.96rem;
+        line-height: 1.7;
+      }
+      .word-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .chip.warning {
+        background: rgba(245,158,11,0.08);
+        border-color: rgba(245,158,11,0.2);
+        color: #92400e;
+      }
+      .scan-panel {
+        margin-top: 20px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+      .scan-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .scan-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+      textarea {
+        width: 100%;
+        min-height: 220px;
+        resize: vertical;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fbfdff;
+        color: var(--text);
+        padding: 16px 14px;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+      .scan-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .primary {
+        background: linear-gradient(135deg, #111827, #374151);
+        color: white;
+      }
+      .secondary {
+        background: #eef2ff;
+        color: #111827;
+      }
+      .results {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      .result-item {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fafbff;
+        padding: 12px 14px;
+      }
+      .result-item h4 {
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+      }
+      .match {
+        background: rgba(37,99,235,0.12);
+        color: #0f172a;
+        border-radius: 6px;
+        padding: 1px 5px;
+      }
+      .no-match {
+        color: var(--muted);
+      }
+      .toc {
+        position: sticky;
+        top: 88px;
+        align-self: start;
+        background: rgba(255,255,255,0.9);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+        box-shadow: var(--shadow);
+      }
+      .toc h3 {
+        margin: 0 0 14px;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+      .toc a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 10px;
+        color: var(--muted);
+      }
+      .toc a:hover,
+      .toc a.active {
+        background: var(--brand-soft);
+        color: var(--text);
+      }
+      .sharebar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .sharebar button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: white;
+        color: var(--muted);
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      @media (max-width: 980px) {
+        .shell { grid-template-columns: 1fr; }
+        .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+        .nav { display: none; }
+        .toc {
+          position: fixed;
+          left: 18px;
+          right: 18px;
+          bottom: 18px;
+          top: auto;
+          max-height: 70vh;
+          overflow: auto;
+          transform: translateY(calc(100% + 24px));
+          opacity: 0;
+          pointer-events: none;
+          transition: transform 0.25s ease, opacity 0.25s ease;
+          z-index: 30;
+        }
+        body.nav-open .toc {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+      @media (max-width: 640px) {
+        .pattern-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark">G</div>
+          <span>GPTZero</span>
+        </div>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="#">Products</a>
+          <a href="#">Resources</a>
+          <a href="#">Blog</a>
+          <a href="#">Education</a>
+          <a href="#">Company</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="tocPanel">Toggle menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container shell">
+      <article class="article">
+        <div class="byline">
+          <div class="avatar">ET</div>
+          <div>
+            <strong>Edwin Thomas</strong><br />
+            <span>Aug 19, 2026 · 7 min read</span>
+          </div>
+        </div>
+
+        <h1>10 AI Patterns, and a New Way to Understand AI-Like Writing</h1>
+        <p class="lede">Our new AI Patterns feature helps explain why a piece of writing might appear to be AI-generated.</p>
+
+        <div class="meta-row">
+          <span class="meta-tag">AI Detection</span>
+          <span class="meta-tag">Interpretability</span>
+          <span class="meta-tag">GPTZero</span>
+        </div>
+
+        <div class="article-content">
+          <section id="what-makes-writing-look-ai">
+            <h2>What makes writing look as if it were written by AI?</h2>
+            <p>While an overall detection score can reveal what GPTZero found, users often want to know how that result came to be. GPTZero has always treated interpretability as an essential part of AI detection.</p>
+            <p>Our document-level scores give an overall picture, while sentence-level highlighting helps pinpoint where the strongest signals appear. Today, we’re introducing AI Patterns, a new feature available in the Advanced Scan view.</p>
+          </section>
+
+          <section id="what-is-an-ai-pattern">
+            <h2>What is an AI Pattern?</h2>
+            <p>Large language models appear to have a recognizable writing style. They do not always use the same vocabulary or sentence structure, but they often return to familiar ways of organizing and presenting ideas.</p>
+            <p>An AI pattern is a content, language, or grammatical structure characteristic of AI chatbot writing. Examples include neat sets of threes, “Not X, but Y” structures, and exaggerated importance applied to ordinary ideas.</p>
+          </section>
+
+          <section id="ai-patterns-in-practice">
+            <h2>10 AI writing patterns in practice</h2>
+            <p>Here are the AI writing patterns we currently detect in text documents. None are exclusive to AI writing, but they occur more often in AI-generated documents than in human writing.</p>
+            <div class="pattern-grid">
+              <div class="pattern-card"><h4>Overblown Importance</h4><p>Ordinary events are described as unusually significant or historically important.</p></div>
+              <div class="pattern-card"><h4>Name Dropping</h4><p>High-profile references are stacked together to make a claim seem more credible.</p></div>
+              <div class="pattern-card"><h4>Empty Commentary</h4><p>General analysis is inserted without real evidence or insight.</p></div>
+              <div class="pattern-card"><h4>Sales-pitch Tone</h4><p>Promotional language replaces neutral, informative prose.</p></div>
+              <div class="pattern-card"><h4>Phantom Experts</h4><p>Claims are attributed to unnamed authorities.</p></div>
+              <div class="pattern-card"><h4>Dressed-up Verbs</h4><p>Simple verbs are replaced with elaborate, inflated constructions.</p></div>
+              <div class="pattern-card"><h4>Not Just X, but Y</h4><p>Claims are framed as dramatic oppositions rather than measured explanations.</p></div>
+              <div class="pattern-card"><h4>Everything in Threes</h4><p>Ideas are grouped into neat triads to create a polished but mechanical rhythm.</p></div>
+              <div class="pattern-card"><h4>Unnecessary Caveats</h4><p>Disclaimers and reminders are added even when the reader already knows the point.</p></div>
+              <div class="pattern-card"><h4>Chatbot Language</h4><p>Explicit AI-style phrasing or refusal language appears in otherwise normal prose.</p></div>
+            </div>
+          </section>
+
+          <section id="words-and-phrases">
+            <h2>Words and Phrases</h2>
+            <p>AI-generated writing often repeats a set of words and phrases more often than human writing. The list below is representative rather than exhaustive.</p>
+            <div class="word-cloud">
+              <span class="chip">pivotal</span>
+              <span class="chip">realm</span>
+              <span class="chip">multifaceted</span>
+              <span class="chip">underscores</span>
+              <span class="chip">intricate</span>
+              <span class="chip">transformative</span>
+              <span class="chip">delve</span>
+              <span class="chip">tapestry</span>
+              <span class="chip">groundbreaking</span>
+              <span class="chip">vibrant</span>
+              <span class="chip">in conclusion</span>
+              <span class="chip">in summary</span>
+              <span class="chip">it is important to note</span>
+              <span class="chip">not only ... but also</span>
+              <span class="chip">serves as</span>
+              <span class="chip">can help to</span>
+              <span class="chip warning">AI language</span>
+              <span class="chip warning">AI language model</span>
+            </div>
+          </section>
+
+          <section id="scan-demo">
+            <h2>Try the pattern scan</h2>
+            <div class="scan-panel">
+              <div class="scan-header">
+                <h3>AI Patterns Explorer</h3>
+                <span class="chip">Educational detection view</span>
+              </div>
+              <textarea id="scanInput" aria-label="Text to scan">In conclusion, it is important to delve into the comprehensive tapestry of modern neural networks. This study plays a pivotal role in illustrating that artificial intelligence continues to evolve. The findings suggest that this topic is crucial for understanding the transformative impact of technology on society.</textarea>
+              <div class="scan-actions">
+                <button class="primary" id="scanBtn" type="button">Scan document</button>
+                <button class="secondary" id="sampleBtn" type="button">Load sample</button>
+              </div>
+              <div class="results" id="results"></div>
+            </div>
+          </section>
+
+          <section id="how-ai-patterns-work">
+            <h2>How do AI patterns work?</h2>
+            <p>We mined a database of human-written and LLM-generated documents to measure how much more frequently each pattern appears in AI-generated text than in human writing.</p>
+            <p>When a scan is triggered, the system reviews the submitted document for repeated trope categories and explains the match in plain language.</p>
+            <blockquote>“AI writing style is a moving target that changes as models, prompts, and editing habits evolve.”</blockquote>
+          </section>
+
+          <section id="looking-ahead">
+            <h2>Looking ahead</h2>
+            <p>Our goal is to build leading tools that help humans understand signs of AI-like writing and compare language patterns across documents.</p>
+          </section>
+        </div>
+      </article>
+
+      <aside class="toc" id="tocPanel" aria-label="Table of contents panel">
+        <h3>Table of contents</h3>
+        <ul class="toc-list">
+          <li><a href="#what-makes-writing-look-ai" class="active">What makes writing look AI-like?</a></li>
+          <li><a href="#what-is-an-ai-pattern">What is an AI Pattern?</a></li>
+          <li><a href="#ai-patterns-in-practice">10 AI writing patterns</a></li>
+          <li><a href="#words-and-phrases">Words and phrases</a></li>
+          <li><a href="#scan-demo">Try the pattern scan</a></li>
+          <li><a href="#how-ai-patterns-work">How it works</a></li>
+          <li><a href="#looking-ahead">Looking ahead</a></li>
+        </ul>
+
+        <div class="sharebar" aria-label="Share actions">
+          <button type="button">Share on X</button>
+          <button type="button">LinkedIn</button>
+          <button type="button">Copy link</button>
+        </div>
+      </aside>
+    </main>
+
+    <script src="src/turnitout.js"></script>
+  </body>
+</html>

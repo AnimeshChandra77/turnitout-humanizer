@@ -1,32 +1,39 @@
-# turnitout-humanizer
-Turnitout — writing humanizer and spatial desk UI toolkit
+# HumanWrite Mentor
 
-This repository contains a small browser-based tool for highlighting AI-style phrases in text and suggesting more human-sounding replacements. It also contains a visual "desk" UI with panning/zooming and a radial dial (for demonstration purposes).
+A small browser-based writing assistant designed to improve clarity, tone, and fluency in a transparent and ethical way.
 
-Important: This project is intended for editing and improving writing quality. It MUST NOT be used to evade plagiarism detection systems or assist academic dishonesty. By using this project you agree to use it ethically and responsibly.
+## What it does
+
+- Rewrites repetitive or awkward academic phrasing into smoother prose
+- Lets users choose a tone: academic, formal, clear, or concise
+- Gives quick readability feedback
+- Supports simple copy-to-clipboard workflows
 
 ## How to run
-
-1. Clone the repository
 
 ```bash
 git clone https://github.com/AnimeshChandra77/turnitout-humanizer.git
 cd turnitout-humanizer
-```
-
-2. Serve the files with a simple HTTP server (recommended)
-
-```bash
 python -m http.server 8000
-# or
-npx http-server .
 ```
 
-3. Open `index.html` in your browser at http://localhost:8000
+Then open:
 
-## Files included
-- `src/turnitout.js` — main script (safe/fixed version)
-- `README.md` — this file
+```text
+http://localhost:8000/index.html
+```
+
+## Ethical use
+
+This project is intended to help improve writing quality and readability. It does not attempt to hide authorship or evade plagiarism detection systems.
+
+Use it to:
+
+- strengthen clarity
+- improve sentence flow
+- refine academic tone
+- reduce weak or inflated phrasing
 
 ## License
+
 MIT

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Patterns Explorer</title>
+    <title>AI Pattern Explorer</title>
     <style>
       :root {
         --bg: #f7f7f7;
@@ -16,7 +16,6 @@
         --brand-soft: #eef2ff;
         --accent: #2563eb;
         --warning: #f59e0b;
-        --danger: #dc2626;
         --success: #16a34a;
         --shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
       }
@@ -30,7 +29,8 @@
         color: var(--text);
       }
       a { color: inherit; text-decoration: none; }
-      button, textarea, select { font: inherit; }
+      button, textarea { font: inherit; }
+
       .container {
         max-width: 1280px;
         margin: 0 auto;
@@ -152,12 +152,8 @@
         letter-spacing: -0.04em;
         margin: 0 0 12px;
       }
-      .article-content h2 {
-        font-size: clamp(1.8rem, 2vw, 2.4rem);
-      }
-      .article-content h3 {
-        font-size: 1.2rem;
-      }
+      .article-content h2 { font-size: clamp(1.8rem, 2vw, 2.4rem); }
+      .article-content h3 { font-size: 1.2rem; }
       .article-content blockquote {
         background: var(--panel);
         border-left: 4px solid var(--brand);
@@ -169,7 +165,7 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
-        margin-top: 10px;
+        margin-top: 12px;
       }
       .pattern-card {
         border: 1px solid var(--line);
@@ -178,10 +174,7 @@
         padding: 18px;
         box-shadow: var(--shadow);
       }
-      .pattern-card h4 {
-        margin: 0 0 8px;
-        font-size: 1.05rem;
-      }
+      .pattern-card h4 { margin: 0 0 8px; font-size: 1.05rem; }
       .pattern-card p {
         margin: 0;
         color: var(--muted);
@@ -225,10 +218,7 @@
         align-items: center;
         margin-bottom: 12px;
       }
-      .scan-header h3 {
-        margin: 0;
-        font-size: 1.1rem;
-      }
+      .scan-header h3 { margin: 0; font-size: 1.1rem; }
       textarea {
         width: 100%;
         min-height: 220px;
@@ -254,14 +244,8 @@
         font-weight: 700;
         cursor: pointer;
       }
-      .primary {
-        background: linear-gradient(135deg, #111827, #374151);
-        color: white;
-      }
-      .secondary {
-        background: #eef2ff;
-        color: #111827;
-      }
+      .primary { background: linear-gradient(135deg, #111827, #374151); color: white; }
+      .secondary { background: #eef2ff; color: #111827; }
       .results {
         margin-top: 16px;
         display: grid;
@@ -273,19 +257,9 @@
         background: #fafbff;
         padding: 12px 14px;
       }
-      .result-item h4 {
-        margin: 0 0 8px;
-        font-size: 0.95rem;
-      }
-      .match {
-        background: rgba(37,99,235,0.12);
-        color: #0f172a;
-        border-radius: 6px;
-        padding: 1px 5px;
-      }
-      .no-match {
-        color: var(--muted);
-      }
+      .result-item h4 { margin: 0 0 8px; font-size: 0.95rem; }
+      .match { background: rgba(37,99,235,0.12); color: #0f172a; border-radius: 6px; padding: 1px 5px; }
+      .no-match { color: var(--muted); }
       .toc {
         position: sticky;
         top: 88px;
@@ -316,8 +290,7 @@
         border-radius: 10px;
         color: var(--muted);
       }
-      .toc a:hover,
-      .toc a.active {
+      .toc a:hover, .toc a.active {
         background: var(--brand-soft);
         color: var(--text);
       }
@@ -337,8 +310,8 @@
       }
       @media (max-width: 980px) {
         .shell { grid-template-columns: 1fr; }
-        .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
         .nav { display: none; }
+        .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
         .toc {
           position: fixed;
           left: 18px;
@@ -433,6 +406,20 @@
             </div>
           </section>
 
+          <section id="robot-style-signals">
+            <h2>How to spot when writing is AI: the 6 elements of robot style</h2>
+            <p>Here are the most common cues people look for when a piece of writing feels too polished, too generic, or too eager to sound “important.”</p>
+
+            <div class="pattern-grid">
+              <div class="pattern-card"><h4>1. Excessive em dashes</h4><p>AI writing often uses em dashes to create emotional rhythm or dramatic pauses, even when punctuation can be simplified.</p></div>
+              <div class="pattern-card"><h4>2. Forced sass</h4><p>Overly performative “hot take” phrasing can read like a clicked-out “Mean Girls” tone rather than real human voice.</p></div>
+              <div class="pattern-card"><h4>3. AI buzzwords</h4><p>Words like “delve,” “grounded,” “vibrant,” “tapestry,” and “pivotal” appear far more often in AI-generated text.</p></div>
+              <div class="pattern-card"><h4>4. Cliché phrases</h4><p>Generic openings like “in today’s fast-paced digital landscape” or “in the dynamic world of…” signal formulaic writing.</p></div>
+              <div class="pattern-card"><h4>5. Formulaic structures</h4><p>Triplets, “not just X, but Y,” and “here’s the deal” patterns feel polished but mechanical.</p></div>
+              <div class="pattern-card"><h4>6. “As a language model” style</h4><p>When the writing sounds like a refusal message or meta commentary, it often contains AI-flavored language.</p></div>
+            </div>
+          </section>
+
           <section id="words-and-phrases">
             <h2>Words and Phrases</h2>
             <p>AI-generated writing often repeats a set of words and phrases more often than human writing. The list below is representative rather than exhaustive.</p>
@@ -494,6 +481,7 @@
           <li><a href="#what-makes-writing-look-ai" class="active">What makes writing look AI-like?</a></li>
           <li><a href="#what-is-an-ai-pattern">What is an AI Pattern?</a></li>
           <li><a href="#ai-patterns-in-practice">10 AI writing patterns</a></li>
+          <li><a href="#robot-style-signals">The 6 signs of robot style</a></li>
           <li><a href="#words-and-phrases">Words and phrases</a></li>
           <li><a href="#scan-demo">Try the pattern scan</a></li>
           <li><a href="#how-ai-patterns-work">How it works</a></li>
